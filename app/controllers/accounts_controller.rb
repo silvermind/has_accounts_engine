@@ -13,9 +13,11 @@ class AccountsController < HasAccountsController
     @account = Account.find(params[:id])
     @bookings = apply_scopes(Booking).includes(:debit_account => :account_type, :credit_account => :account_type).by_account(@account)
     
-    unless request.format.pdf?
-      @bookings = @bookings.page(params[:page]) || 1
-    end    
+    # HACK to make PDF export working
+    # we can't use the request.format, as the middleware generates the PDF and send a normal request to the app
+    # can only be tested in multiprocess rails app, blocks on web rick 
+    @bookings = @bookings.page(1).per_page(10000)
+    # @bookings = @bookings.page(params[:page]) || 1
 
     if params[:only_credit_bookings]
       @bookings = @bookings.where(:credit_account_id => @account.id)
