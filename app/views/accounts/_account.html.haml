@@ -1,10 +1,15 @@
 %tr[account]
   %td= account.code
+  %td= account.type
+  %td= account.account_type
+  %td= account.account_grouping_type.to_select_label if account.account_grouping_type
+
   %td
     = link_to account.title, account, 'data-href-container' => 'tr'
     .pull-right
       - account.tags.each do |tag|
         = boot_label(tag)
+
   %td.action-links
     = list_link_for(:edit, account)
     = list_link_for(:delete, account)

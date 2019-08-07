@@ -5,6 +5,8 @@
     .span6= f.input :code
     .span6= f.association :account_type, :label_method => :title
   .row-fluid
+    .span6= f.association :account_grouping_type, :label_method => :to_select_label
+  .row-fluid
     .span12= f.input :tag_list, :input_html => {:class => 'select2-tags span', 'data-tags' => Account.tag_collection.to_json}
 
   .form-actions
